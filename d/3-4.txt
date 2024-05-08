@@ -1,0 +1,97 @@
+import pandas as pd #Python library used for working with data sets
+import numpy as np #Python library used for working with arrays
+import seaborn as sn # library for making statistical graphics in Python
+import random as rn 
+import matplotlib.pyplot as mat #used to create 2D graphs and plots by using python scripts
+from sklearn.model_selection import train_test_split 
+from sklearn.naive_bayes import GaussianNB
+from sklearn.metrics import accuracy_score 
+
+DataFrame1=pd.read_csv('heart.csv') #Read a comma-separated values (csv) file into DataFrame
+DataFrame1
+
+DataFrame2=pd.read_csv('AirQuality.csv',sep=';') #Read a comma-separated values (csv) file into DataFrame
+DataFrame2
+
+DataFrame1.isna().sum().sum() #Detect missing values for an array-like object
+#.sum() sums up the numbers in the list
+
+DataFrame1.dtypes
+
+DataFrame2.dtypes
+
+DataFrame3=DataFrame2.iloc[:,:15] #iloc stands for “integer location”.
+#It is used to select rows and columns from a Pandas DataFrame or a Series using integer-based indexing
+DataFrame3
+
+DataFrame3.isna().sum().sum()
+
+DataFrame4=DataFrame3.dropna()
+DataFrame4
+
+#Replacing the Object dtype of Date to Date dtype
+DataFrame4['Date']=pd.to_datetime(DataFrame4['Date']);
+
+DataFrame4
+
+#To Replace the Comma's with Dot
+DataFrame4.replace(to_replace=',',value='.',regex=True,inplace=True)
+DataFrame4
+
+DataFrame4.drop_duplicates(inplace=True)
+DataFrame4 #Drop Duplicates
+
+DataFrame1
+
+DataFrame4
+
+DataSet1=DataFrame4[['Date','Time','T','RH','AH']].loc[0:50]
+DataSet1.head()
+
+DataSet2=DataFrame4[['Date','Time','T','RH','AH']].loc[51:100]
+DataSet2.head()
+
+DataSet3=DataFrame1[['age','sex','cp','ca','target']].loc[50:100]
+DataSet3.head()
+
+Merged=pd.concat([DataSet1,DataSet2])
+Merged
+
+DataFrame1.loc[DataFrame1['sex']==1,'sex']='M' #Replacing 1 with M
+
+DataFrame1.loc[DataFrame1['sex']==0,'sex']='F' #Replacing 0 with F
+DataFrame1.head()
+
+from sklearn.preprocessing import LabelEncoder
+labelencoder=LabelEncoder()
+DataFrame1["sex"]=labelencoder.fit_transform(DataFrame1["sex"])
+DataFrame1 #used to encode categorical variables into numerical labels
+
+DataFrame1[DataFrame1['ca']==4]
+
+DataFrame1.loc[DataFrame1['ca']==4,'ca']=np.NaN  #It locates the rows where the value in the 'ca' column is equal to 4 and replaces those values with NaN (Not a Number)
+
+DataFrame1 = DataFrame1.fillna(DataFrame1.median())
+
+DataFrame1.isnull().sum()
+DataFrame1
+
+X_train, X_test, y_train, y_test = train_test_split(DataFrame1.iloc[:,:-1], DataFrame1.iloc[:,-1], test_size = 0.3, random_state = 0)
+
+X_train.shape, X_test.shape,y_train.shape
+
+gnb = GaussianNB()
+
+gnb.fit(X_train, y_train)
+#fitting a Gaussian Naive Bayes (GNB) model on the training data
+
+y_pred = gnb.predict(X_test)
+y_pred
+
+print('Model accuracy score: {0:0.4f}'. format(accuracy_score(y_test, y_pred)))
+
+dataplot = sn.heatmap(DataFrame4.corr(), cmap="Blues", annot=True)
+mat.figure(figsize=(20,15))
+mat.show() #Heatmap Plot provide a 2D array or a correlation matrix.
+
+

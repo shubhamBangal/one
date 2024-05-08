@@ -1,0 +1,38 @@
+#1
+
+
+import pandas as pd #Python library used for working with data sets
+import numpy as np #Python library used for working with arrays
+
+df=pd.read_csv('dataset_Facebook.csv',sep=';') #Read a comma-separated values (csv) file into DataFrame
+df
+
+df.describe() #returns description of the data in the DataFrame
+
+df.shape #enables us to obtain the shape of a DataFrame
+
+df1=df[['Page total likes','Category','Post Month','Post Weekday']].loc[0:15]
+df1 #allows the return of specified rows and/or columns from that DataFrame
+
+df2=df[['Page total likes','Category','Post Month','Post Weekday']].loc[16:30]
+df2 #allows the return of specified rows and/or columns from that DataFrame
+
+df3=df[['Page total likes','Category','Post Month','Post Weekday']].loc[31:50]
+df3 #allows the return of specified rows and/or columns from that DataFrame
+
+merging=pd.concat([df1,df2,df3])
+merging #Concatenate pandas objects along a particular axis
+
+sorted=df.sort_values('Page total likes',ascending=False)
+sorted #sorts the DataFrame by the specified label
+
+trans=df.transpose() #df.T
+trans
+#the rows and columns have been swapped.
+#The column names in the original DataFrame become the row names in the transposed DataFrame, and vice versa.
+
+shaping=df.shape
+shaping
+
+pivot_table=pd.pivot_table(df,index=['Type','Paid'],values='like') #Used for aggregation and grouping to find analysis
+pivot_table
